@@ -1,0 +1,19 @@
+#!/usr/bin/env bash
+# Usage: new-project <python|cpp|jekyll> <target-dir>
+# Copies the template's .devcontainer/ into target-dir (creating it if needed).
+set -euo pipefail
+here="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+tmpl="${1:-}"; dest="${2:-}"
+if [ -z "$tmpl" ] || [ -z "$dest" ] || [ ! -d "$here/$tmpl/.devcontainer" ]; then
+  echo "usage: new-project <$(cd "$here" && ls -d */ | tr -d / | paste -sd'|')> <target-dir>" >&2
+  exit 1
+fi
+mkdir -p "$dest"
+if [ -e "$dest/.devcontainer" ]; then
+  echo "refusing: $dest/.devcontainer already exists" >&2; exit 1
+fi
+cp -r "$here/$tmpl/.devcontainer" "$dest/"
+for d in claude memory shared; do
+  [ -d "$HOME/devhome/$d" ] || echo "warning: ~/devhome/$d missing — container mounts will fail" >&2
+done
+echo "created $dest/.devcontainer from $tmpl. Open in VS Code (launch with 'code .' from WSL) → Reopen in Container."
