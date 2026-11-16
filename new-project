@@ -16,4 +16,11 @@ cp -r "$here/$tmpl/.devcontainer" "$dest/"
 for d in claude memory shared; do
   [ -d "$HOME/devhome/$d" ] || echo "warning: ~/devhome/$d missing — container mounts will fail" >&2
 done
-echo "created $dest/.devcontainer from $tmpl. Open in VS Code (launch with 'code .' from WSL) → Reopen in Container."
+echo "created $dest/.devcontainer from $tmpl"
+if command -v code >/dev/null; then
+  [ -n "${GH_TOKEN:-}" ] || echo "warning: GH_TOKEN not set in this shell — git push inside the container will fail" >&2
+  code "$dest"
+  echo "VS Code opening — click 'Reopen in Container' when prompted."
+else
+  echo "open $dest in VS Code and choose 'Reopen in Container'."
+fi

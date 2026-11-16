@@ -14,7 +14,10 @@
       "version": "lts"
     },
     "ghcr.io/devcontainers/features/github-cli:1": {},
-    "ghcr.io/anthropics/devcontainer-features/claude-code:1": {}
+    "ghcr.io/anthropics/devcontainer-features/claude-code:1": {},
+    "ghcr.io/devcontainers-extra/features/apt-packages:1": {
+      "packages": "vim,less,jq,tree,ripgrep,htop"
+    }
   },
   "mounts": [
     "source=${localEnv:HOME}/devhome/claude,target=/home/vscode/.claude,type=bind",
